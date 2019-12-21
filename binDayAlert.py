@@ -7,7 +7,7 @@
 
     File: binDayAlert.py
 
-    License: MIT License (MIT)
+    License: Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) 
 
 	Description: Script to get bin collection dates and display them on ePaper screen
 '''
