@@ -5,7 +5,7 @@
 Script to grab the date of the next bin collection from the Local Council's website.
 
 
-##To complete
+## 🔨To complete
 - List dependencies
 - Expand README.md
 - Handle errors
