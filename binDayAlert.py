@@ -5,7 +5,11 @@
 	
 	Date: December 2019
 
-	Desc: Script to get bin collection dates and display them on ePaper screen
+    File: binDayAlert.py
+
+    License: MIT License (MIT)
+
+	Description: Script to get bin collection dates and display them on ePaper screen
 '''
 #Imports required
 from PIL import Image, ImageFont, ImageDraw
@@ -50,7 +54,7 @@ def parseBinData(binData):
 		today = date.today()
 		todaysDate = today.strftime("%d/%m/%Y")
 
-        #NOTE- you will need to edit the xPath expressions depending on the layout of your Council's webpage formatting
+        #NOTE- you will need to edit the XPath expressions depending on the layout of your Council's webpage formatting
         #NOTE- modify the script to account for the various bins you may have collected e.g. refuse, recycling, garden waste, etc.
 
 		#Get the listing for the first bin
