@@ -8,13 +8,13 @@ Script to grab the date of the next bin collection from the Local Council's webs
 Text
 
 ## Requirements
-To run the script, the following is required:
+To run the script, the following packages are required:
 
-* `Pillow` - Python Imaging Library (Fork) Pillow.
-* `font-fredoka-one` - Font used when displaying text.
-* `inky` - Python library for the [Pimoroni](https://github.com/pimoroni) Inky pHAT e-paper display.
+* `Pillow` - Python Imaging Library (Fork) Pillow
+* `font-fredoka-one` - Font used when displaying text
+* `inky` - Python library for the [Pimoroni](https://github.com/pimoroni) Inky pHAT e-paper display
 * `lxml` - Used to parse the DOM of the webpage
-* `requests` - Request the HTML of a webpage
+* `requests` - Requests the HTML of a webpage
 
 Install these via pip:
 
