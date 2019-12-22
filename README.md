@@ -5,7 +5,7 @@
 Script to grab the date of the next bin collection from the Local Council's website.
 
 ## Description
-Text
+This script requests the HTML of the Local Council's webpage.  XPath expressions are then used to navigate the DOM, returning information relating to the dates various bins will be emptied (e.g. refuse, recycling, food, etc.).  This information is then written to an Inky pHAT e-paper display from [Pimoroni](https://github.com/pimoroni), attached to a Raspberry Pi Zero W.  It is suggested the script is run regularly as a cron job.
 
 ## Requirements
 To run the script, the following packages are required:
@@ -21,7 +21,5 @@ Install these via pip:
 `pip install Pillow font-fredoka-one inky lxml requests`
 
 ## 🔨To complete
-- List dependencies
-- Expand README.md
 - Handle errors
 - Tidy script
