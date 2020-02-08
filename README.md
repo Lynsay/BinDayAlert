@@ -8,6 +8,7 @@ Script to grab the date of the next bin collection from the Local Council's webs
 This script requests the HTML of the Local Council's webpage.  XPath expressions are then used to navigate the DOM, returning information relating to the dates various bins will be emptied (e.g. refuse, recycling, food, etc.).  This information is then written to an Inky pHAT e-paper display from [Pimoroni](https://github.com/pimoroni), attached to a Raspberry Pi Zero W.  It is suggested the script is run regularly as a cron job (once per day).
 
 <img src="BinDayAlert.jpg" alt="Bin Day Alert" title="Bin Day Alert" width="300" height="300" />
+<img src="BinDayAlertSMS.jpg" alt="Bin Day Alert SMS" title="Bin Day Alert SMS" width="300"  />
 
 ## Requirements
 To run the script, the following packages are required:
