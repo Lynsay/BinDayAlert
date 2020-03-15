@@ -25,5 +25,9 @@ Install these via pip:
 
 `pip install Pillow inky lxml requests nexmo`
 
+Suggested cron schedule (once per day at 12 noon):
+
+`0 12 * * * /usr/bin/python /home/pi/BinDayAlert/Code/binDayAlert.py >> /home/pi/log.txt 2>&1`
+
 ## 🔨To complete
 - Tidy script
