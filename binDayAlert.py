@@ -3,9 +3,7 @@
 '''
 	Author: Lynsay A. Shepherd
 	
-	Date: 14th December 2019
-
-	Revised: 8th February 2020
+	Date: 6th April 2020
 
 	Desc: Script to get bin collection dates and display them on ePaper screen
 '''
@@ -14,7 +12,7 @@
 from PIL import Image, ImageFont, ImageDraw
 from inky import InkyPHAT
 from lxml import html
-from datetime import date, timedelta
+from datetime import date, time, timedelta
 import datetime
 import requests
 import nexmo
@@ -25,7 +23,7 @@ import calendar
 inky_display = InkyPHAT("red")
 inky_display.set_border(inky_display.WHITE)
 
-#Project fonts - Roboto
+#Project fonts
 font = ImageFont.truetype("Roboto-Bold.ttf", 22)
 fontInfo = ImageFont.truetype("Roboto-Bold.ttf", 18)
 fontUpdated = ImageFont.truetype("Roboto-Regular.ttf", 10)
@@ -45,7 +43,7 @@ def pullBinPage(binUrl):
 		if page.status_code == 200:
 			parseBinData(page)
 		else:
-			print("oh")
+			print("Error")
 	except:
 		print ("Error getting page")
 
@@ -62,10 +60,12 @@ def parseBinData(binData):
 		#Get the listing for the first bin
 		binOneType = ''.join(tree.xpath('//table/tr[2]/td[3]/text()'))
 		binOneDate = ''.join(tree.xpath('//table/tr[2]/td[6]/text()'))
+		binOneDateNew = datetime.datetime.strptime(binOneDate, '%d/%m/%Y')
 
 		#Get the listing for the second bin
 		binTwoType = ''.join(tree.xpath('//table/tr[3]/td[3]/text()'))
 		binTwoDate = ''.join(tree.xpath('//table/tr[3]/td[6]/text()'))
+		binTwoDateNew = datetime.datetime.strptime(binTwoDate, '%d/%m/%Y')
 
 		#Striping the term "food waste" from the strings
 		#Then strip "mixed" from "mixed recycling"
@@ -78,13 +78,13 @@ def parseBinData(binData):
 
 
 		#Output to terminal
-		if binOneDate < binTwoDate:
-			print ("The next bin to be emptied is " + binOneType + " on " + binOneDate)
+		if binOneDateNew < binTwoDateNew:
+			print ("The next bin to be emptied is your " + binOneType + " bin on " + binOneDate)
 			binOneOutput = binOneType +": "+binOneDate+"*"
 			binTwoOutput = binTwoType +": "+binTwoDate
 		
 		else:
-			print ("The next bin to be emptied is " + binTwoType + " on " + binTwoDate)
+			print ("The next bin to be emptied is your " + binTwoType + " bin on " + binTwoDate)
 			binOneOutput = binOneType +": "+binOneDate
 			binTwoOutput = binTwoType +": "+binTwoDate+"*"
 
@@ -96,7 +96,16 @@ def parseBinData(binData):
 		outputBinDetails(todaysDateOutput, binOneOutput, binTwoOutput)
 
 		#Check if it's time to send a reminder SMS
-		checkTextMessage(todaysDateOutput, binOneType, binOneDate, binTwoType, binTwoDate)
+		#Do not send a text for the midnight cronjob, only for the 12 noon cronjob
+		#Get current time
+		now = datetime.datetime.now()
+		currentTime=datetime.time(now.hour, now.minute)
+		print (currentTime)
+		if currentTime > datetime.time(11,59) and currentTime < datetime.time(12,10):
+			print("Sending a text")
+			checkTextMessage(todaysDateOutput, binOneType, binOneDate, binTwoType, binTwoDate)
+		else:
+			print("Not the time to send a text")
 
 	except:
 		print ("Error pulling bin data")
@@ -114,15 +123,14 @@ def checkTextMessage(todaysDateOutput, binOneType, binOneDate, binTwoType, binTw
 		currentDate = date.today()
 
 		#Text for SMS message
-		if binOneDate < binTwoDate:
-			textContent="Hi Lynsay, the next bin to be emptied is your " + binOneType + " bin on " + binOneDate
+		if binOneDateObj < binTwoDateObj:
+			textContent=binOneType + " bin on " + binOneDate
 
 		else:
-			textContent="Hi Lynsay, the next bin to be emptied is your" + binTwoType + " bin on " + binTwoDate
-
+			textContent=binTwoType + " bin on " + binTwoDate
 
 		#if it's the day before a bin is emptied, send a text
-		if binOneDateObj.date()-timedelta(1) == currentDate:
+		if binOneDateObj.date()-timedelta(1) == currentDate or binOneDateObj.date()-timedelta(4) == currentDate:
 			print (binOneDateObj.date()-timedelta(1))
 			#Send message
 			client.send_message({
@@ -130,8 +138,7 @@ def checkTextMessage(todaysDateOutput, binOneType, binOneDate, binTwoType, binTw
 				'to': 'YOUR_PHONENUMBER',
 				'text': textContent})
 		
-
-		elif binTwoDateObj.date()-timedelta(1) == currentDate:
+		elif binTwoDateObj.date()-timedelta(1) == currentDate or binTwoDateObj.date()-timedelta(4) == currentDate:
 			print (binTwoDateObj.date()-timedelta(1))
 			#Send message
 			client.send_message({
@@ -179,7 +186,7 @@ def outputBinDetails(todaysDateOutput, binOneOutput, binTwoOutput):
 def main():
 	try:
 		print ("Main method")
-		theurl="YOUR_LOCAL_COUNCILS_SITE"
+		theurl="YOUR_LOCAL_COUNCIL_SITE"
 		pullBinPage(theurl)
 
 		
