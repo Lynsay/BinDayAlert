@@ -12,7 +12,7 @@ It is suggested the script is run regularly as a cron job (once at midnight, onc
 <img src="BinDayAlert.jpg" alt="Bin Day Alert" title="Bin Day Alert" width="300" height="300" />
 <img src="BinDayAlertSMS.jpg" alt="Bin Day Alert SMS" title="Bin Day Alert SMS" width="300"  />
 
-## Requirements
+## Dependencies
 To run the script, the following packages are required:
 
 * `Pillow` - Python Imaging Library (Fork) Pillow
@@ -25,6 +25,7 @@ Install these via pip:
 
 `pip install Pillow inky lxml requests nexmo`
 
+## Cron Schedule
 Suggested cron schedule (twice per day- midnight and at 12 noon):
 
 `0 0 * * * /usr/bin/python /home/pi/BinDayAlert/Code/binDayAlert.py >> /home/pi/log.txt 2>&1`
